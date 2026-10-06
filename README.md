@@ -1,5 +1,5 @@
 # AB-620 — Microsoft Certified: AI Agent Builder Associate
-### EY Batch · October 2026 · Delivered by AVYUKTi Technologies
+### EY Batch · October 2026 · Delivered by Shashikanth (AVYUKTi Tech)
 
 Designing and Building Integrated AI Agent Solutions in Microsoft Copilot Studio — a 5-day, hands-on, lab-driven program preparing participants for the **AB-620** certification exam.
 
