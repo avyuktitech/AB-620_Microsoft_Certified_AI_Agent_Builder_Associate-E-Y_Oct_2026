@@ -1,579 +1,174 @@
-# 🏗️ Architecture & Wiring Diagrams
+# AB-620 — Microsoft Certified: AI Agent Builder Associate
+### EY Batch · October 2026 · Delivered by AVYUKTi Technologies
 
-This section provides the visual architecture, component wiring, conversation flow, and integration diagrams for the Enterprise IT Support AI Agent.
+Designing and Building Integrated AI Agent Solutions in Microsoft Copilot Studio — a 5-day, hands-on, lab-driven program preparing participants for the **AB-620** certification exam.
+
+| | |
+|---|---|
+| **Exam** | AB-620 · Level: Associate (Developer) · Duration: 120 min · Passing score: 700/1000 |
+| **Domains** | Plan & configure (30–35%) · Integrate & extend (40–45%) · Test & manage (20–25%) |
+| **Format** | 5 Days · 40 total hours · 30% concepts / 70% hands-on labs |
+| **Client** | EY |
+| **Cohort** | Oct 2026 |
 
 ---
 
-# 1. Enterprise AI Agent — Block Diagram
+## Repository Structure
+
+```
+AB-620_Microsoft_Certified_AI_Agent_Builder_Associate-E-Y_Oct_2026/
+├── README.md                                   ← you are here
+├── AB-620_Microsoft_Certified-AI_Agent_Builder_Associate.xlsx   (full day-wise content outline)
+├── Lab_Accesses.xlsx                           (participant lab environment credentials/log)
+├── AB650-DAY1-DashBoard.jpg                    (Day 1 sample dashboard screenshot)
+├── ABC Technologies-HR policy doc.pdf          (sample knowledge source — HR agent labs)
+├── IT Support Knowledge Base_111.pdf           (sample knowledge source — IT helpdesk agent labs)
+├── Professional_Etiquette_in_IT.pdf            (sample knowledge source — RAG/grounding labs)
+├── EvalConversationTemplate.csv                (agent test-set import template)
+│
+├── DAY1/        → Copilot Studio Foundations & Generative AI Literacy
+├── DAY2/        → Plan & Configure Agent Solutions (Domain 1)
+├── DAY3/        → Topics, Triggers & Generative Orchestration
+├── DAY4/        → Knowledge Sources & Retrieval-Augmented Generation (RAG)
+├── DAY5/        → Integrate/Extend, Test & Manage, Capstone Readiness
+│
+├── Mini-Project1/   → Applied exercise (Days 1–2 concepts)
+├── Mini-Project2/   → Applied exercise (Days 3–4 concepts — Knowledge-Grounded Support Agent)
+├── CAPSTONE-Project1/ → End-to-end enterprise AI agent solution (Day 5)
+└── AB620-Exam-Papers/ → Practice questions & exam readiness material
+```
+
+> Each `DAYx/`, `Mini-ProjectX/` and `CAPSTONE-ProjectX/` folder has its own `README.md` with objectives, step-by-step lab instructions, and checkpoints.
+
+---
+
+## Program Map
+
+| Day | Module | Domain Focus | Lab Output |
+|---|---|---|---|
+| 1 | Copilot Studio Foundations & Generative AI Literacy | Foundations | First published agent, tested in Teams |
+| 2 | Plan & Configure Agent Solutions | Domain 1 (30–35%) | Blueprint + Dev/Test/Prod envs + DLP policy + Solution |
+| 3 | Topics, Triggers & Generative Orchestration | Domain 1/2 | Topic authoring, Power Fx, Adaptive Cards, Fallback |
+| 4 | Knowledge Sources & RAG | Domain 2 (40–45%) | Multi-source grounded agent with Azure AI Search RAG |
+| 5 | Integrate/Extend, Test & Manage, Capstone | Domain 2 & 3 | Production-ready, multi-agent, deployed & monitored solution |
+
+---
+
+## Architecture — Training Lab Environment (Block Diagram)
 
 ```mermaid
 flowchart TB
+    subgraph Participant["Participant Workstation"]
+        A[Browser: copilotstudio.microsoft.com]
+        B[Browser: admin.powerplatform.microsoft.com]
+        C[Microsoft Teams Client]
+    end
 
-    U[👤 Employee / User]
+    subgraph PowerPlatform["Power Platform Tenant"]
+        D[Environment: Dev]
+        E[Environment: Test]
+        F[Environment: Production]
+        G[DLP Policy Engine]
+        H[Dataverse]
+        I[Solutions / ALM]
+    end
 
-    U --> C[🤖 Microsoft Copilot Studio<br/>IT Support Agent]
+    subgraph AgentCore["Copilot Studio Agent"]
+        J[Topics & Triggers]
+        K[Generative Orchestration]
+        L[Power Fx Variables]
+        M[Knowledge Sources]
+    end
 
-    C --> GO[🧠 Generative Orchestration]
+    subgraph Knowledge["Grounding Sources"]
+        N[(SharePoint)]
+        O[(Uploaded Documents\nHR Policy / IT KB / Etiquette)]
+        P[(Public Website)]
+        Q[(Azure AI Search Index\nRAG Pipeline)]
+    end
 
-    GO --> T[💬 Topics & Conversation Flows]
-    GO --> K[📚 Knowledge Sources]
-    GO --> A[⚙️ Actions / Tools]
+    subgraph Channels["Deployment Channels"]
+        R[Microsoft Teams]
+        S[M365 Copilot]
+        T[Custom Website]
+    end
 
-    T --> V[📦 Variables & Entities]
-    T --> P[🧮 Power Fx]
-    T --> B[🔀 Conditions & Branching]
-    T --> AC[🃏 Adaptive Cards]
-
-    K --> SP[📁 SharePoint<br/>IT Knowledge Base]
-    K --> DOC[📄 Policy / PDF Documents]
-
-    A --> PA[⚡ Power Automate]
-    A --> DV[🗄️ Dataverse]
-    A --> API[🌐 Enterprise APIs]
-
-    PA --> DV
-    PA --> API
-
-    DV --> R[🎫 IT Service / Ticket Data]
-
-    C --> H[👨‍💼 Human IT Support]
-
-    style U stroke-width:2px
-    style C stroke-width:3px
-    style GO stroke-width:2px
+    A --> D
+    B --> G
+    G --> D & E & F
+    D --> H
+    D --> I
+    I -->|Promote| E -->|Promote| F
+    D --> J --> K --> M
+    J --> L
+    M --> N & O & P & Q
+    F --> R & S & T
+    C --> R
 ```
 
 ---
 
-# 2. Complete Solution Block Diagram
+## Wiring Diagram — Integrations & Agentic Workflows (Day 4/5)
 
 ```mermaid
 flowchart LR
+    U((End User)) -->|Chat / Voice| Agent[Copilot Studio Agent]
 
-    subgraph USER["👤 User Layer"]
-        EMP[Employee]
-        TEAMS[Microsoft Teams]
-        WEB[Web / Custom Channel]
-    end
+    Agent -->|Trigger Phrase / Generative Route| Topic1[Topic: FAQ]
+    Agent -->|Trigger Phrase / Generative Route| Topic2[Topic: Transaction]
+    Agent -->|Low Confidence| Fallback[System Topic: Fallback]
 
-    subgraph AGENT["🤖 AI Agent Layer"]
-        CS[Copilot Studio]
-        ORCH[Generative Orchestration]
-        TOPICS[Topics]
-        KNOW[Knowledge]
-        TOOLS[Tools / Actions]
-    end
+    Topic1 --> KB[Knowledge Sources: RAG]
+    KB --> AISearch[(Azure AI Search Index)]
+    KB --> SPO[(SharePoint)]
 
-    subgraph LOGIC["⚙️ Conversation Logic"]
-        VAR[Variables]
-        ENT[Entities / Slot Filling]
-        FX[Power Fx]
-        COND[Conditions]
-        CARD[Adaptive Cards]
-        SYS[System Topics]
-        FALL[Fallback]
-    end
+    Topic2 --> Connector[Custom Connector]
+    Connector --> API[(Internal REST API)]
+    Topic2 --> MCP[MCP Tool]
+    Topic2 --> Flow[Agent Flow / Power Automate]
+    Flow --> CRM[(CRM System)]
+    Flow --> Ticket[(Ticketing System)]
 
-    subgraph DATA["🗄️ Enterprise Data"]
-        DV[Dataverse]
-        SP[SharePoint]
-        DOCS[Policy Documents]
-        KB[IT Knowledge Base]
-    end
+    Fallback -->|Escalate| A2A[Agent2Agent Hand-off]
+    A2A --> Specialist[Specialist Agent]
+    A2A --> Human[Human Agent — Teams/Omnichannel]
 
-    subgraph AUTOMATION["⚡ Automation"]
-        PA[Power Automate]
-        API[Enterprise APIs]
-    end
-
-    subgraph SUPPORT["👨‍💼 Support"]
-        HUMAN[Human IT Support]
-        TICKET[IT Ticket]
-    end
-
-    EMP --> CS
-    TEAMS --> CS
-    WEB --> CS
-
-    CS --> ORCH
-
-    ORCH --> TOPICS
-    ORCH --> KNOW
-    ORCH --> TOOLS
-
-    TOPICS --> VAR
-    TOPICS --> ENT
-    TOPICS --> FX
-    TOPICS --> COND
-    TOPICS --> CARD
-    TOPICS --> SYS
-    TOPICS --> FALL
-
-    KNOW --> SP
-    KNOW --> DOCS
-    KNOW --> KB
-
-    TOOLS --> PA
-    TOOLS --> DV
-    TOOLS --> API
-
-    PA --> DV
-    PA --> TICKET
-
-    FALL --> HUMAN
-    TICKET --> HUMAN
+    Agent --> Analytics[Analytics & Monitoring]
+    Agent --> DLP[DLP Policy Enforcement]
 ```
 
 ---
 
-# 3. Agent Conversation Wiring Diagram
+## Reference Materials
 
-This diagram shows how a user request travels through the agent.
+| File | Used In | Purpose |
+|---|---|---|
+| `ABC Technologies-HR policy doc.pdf` | Day 1, Day 4 | Sample HR FAQ knowledge source |
+| `IT Support Knowledge Base_111.pdf` | Day 4, Mini-Project2 | Sample IT helpdesk / RAG knowledge source |
+| `Professional_Etiquette_in_IT.pdf` | Day 4 | Secondary knowledge source for multi-source grounding demo |
+| `EvalConversationTemplate.csv` | Day 5 | Test-set import template for agent evaluation (Test and Manage domain) |
+| `Lab_Accesses.xlsx` | All days | Participant lab environment / credential tracker |
+| `AB650-DAY1-DashBoard.jpg` | Day 1 | Reference screenshot of the Power Platform admin center Environments dashboard |
+| `AB-620_Microsoft_Certified-AI_Agent_Builder_Associate.xlsx` | All days | Full day-wise content outline (master TOC) |
 
-```mermaid
-flowchart TD
-
-    START([👤 User Message])
-
-    START --> INTENT{🧠 Identify Intent}
-
-    INTENT -->|Laptop Request| LAP[Laptop Request Topic]
-    INTENT -->|Software Request| SOFT[Software Request Topic]
-    INTENT -->|Password Reset| PASS[Password Reset Topic]
-    INTENT -->|IT Ticket| TICKET[IT Ticket Topic]
-    INTENT -->|Unknown| FALL[Fallback Topic]
-
-    LAP --> SLOT1[📦 Capture Laptop Type]
-    SLOT1 --> SLOT2[📦 Capture Business Justification]
-    SLOT2 --> SLOT3[📅 Capture Required Date]
-
-    SLOT3 --> FX[🧮 Power Fx]
-    FX --> PRIORITY[Calculate Priority]
-
-    PRIORITY --> CONFIRM[🃏 Adaptive Card Confirmation]
-
-    CONFIRM --> DECISION{User Decision}
-
-    DECISION -->|Submit| ACTION[⚡ Create Request]
-    DECISION -->|Cancel| CANCEL[❌ Cancel Request]
-
-    ACTION --> SUCCESS[✅ Request Created]
-    CANCEL --> END([Conversation End])
-    SUCCESS --> END
-
-    SOFT --> SOFTWARE[Collect Application Details]
-    SOFTWARE --> APPROVAL[Approval Required]
-    APPROVAL --> ACTION2[⚡ Create Software Request]
-    ACTION2 --> END
-
-    PASS --> RESET[🔐 Password Reset Guidance]
-    RESET --> END
-
-    TICKET --> DETAILS[Collect Issue Details]
-    DETAILS --> CREATE[⚡ Create IT Ticket]
-    CREATE --> END
-
-    FALL --> CLARIFY[Ask Clarifying Question]
-    CLARIFY --> RESOLVE{Intent Identified?}
-
-    RESOLVE -->|Yes| INTENT
-    RESOLVE -->|No| HUMAN[👨‍💼 Escalate to Human]
-```
+> **Note:** the filename `AB650-DAY1-DashBoard.jpg` appears to carry a naming typo (`AB650` vs. the program code `AB620`) — recommend renaming for consistency before the next cohort.
 
 ---
 
-# 4. Laptop Request — Detailed Wiring Diagram
+## Mini Projects & Capstone
 
-```mermaid
-flowchart TD
-
-    A([User: I need a laptop])
-
-    A --> B[Identify Laptop Request]
-
-    B --> C{Laptop Type}
-
-    C -->|Standard| D[Standard Laptop]
-    C -->|Developer| E[Developer Laptop]
-    C -->|Executive| F[Executive Laptop]
-
-    D --> G[Capture Reason]
-    E --> G
-    F --> G
-
-    G --> H[Capture Required Date]
-
-    H --> I[Store Variables]
-
-    I --> J["LaptopType<br/>Reason<br/>RequiredDate"]
-
-    J --> K[Power Fx Calculation]
-
-    K --> L{Priority}
-
-    L -->|High| M[Priority = High]
-    L -->|Normal| N[Priority = Normal]
-
-    M --> O[Adaptive Card]
-    N --> O
-
-    O --> P{Confirm?}
-
-    P -->|Yes| Q[Power Automate]
-    P -->|No| R[Cancel]
-
-    Q --> S[Dataverse / IT Ticket]
-    S --> T[Return Ticket Number]
-
-    T --> U([Success])
-
-    R --> V([Conversation End])
-```
+- **Mini-Project1** — applied exercise reinforcing Day 1–2 concepts (agent creation, environment/DLP/solution setup).
+- **Mini-Project2** — Knowledge-Grounded Enterprise Support Agent (RAG), reinforcing Day 3–4 concepts. See [`Mini-Project2/README.md`](./Mini-Project2/README.md).
+- **CAPSTONE-Project1** — end-to-end production-ready enterprise AI agent solution, integrating every module (Day 5).
 
 ---
 
-# 5. Knowledge Grounding — Wiring Diagram
+## Exam Readiness
 
-```mermaid
-flowchart LR
-
-    USER[👤 Employee]
-
-    USER --> AGENT[🤖 Copilot Studio Agent]
-
-    AGENT --> QUERY[User Question]
-
-    QUERY --> SEARCH[🔎 Knowledge Retrieval]
-
-    SEARCH --> SP[📁 SharePoint]
-    SEARCH --> PDF[📄 IT Policy PDFs]
-    SEARCH --> KB[📚 IT Knowledge Base]
-
-    SP --> RESULTS[Relevant Content]
-    PDF --> RESULTS
-    KB --> RESULTS
-
-    RESULTS --> GROUND[🧠 Grounded Response]
-
-    GROUND --> AGENT
-
-    AGENT --> USER
-```
+See [`AB620-Exam-Papers/README.md`](./AB620-Exam-Papers/README.md) for practice questions mapped to each exam domain, plus a readiness checklist before booking the AB-620 exam via Pearson VUE.
 
 ---
 
-# 6. Power Automate Integration — Wiring Diagram
+## Maintainer
 
-```mermaid
-flowchart LR
-
-    AGENT[🤖 Copilot Studio Agent]
-
-    AGENT --> INPUT[Request Parameters]
-
-    INPUT --> FLOW[⚡ Power Automate Flow]
-
-    FLOW --> VALIDATE[Validate Request]
-
-    VALIDATE --> DECISION{Valid?}
-
-    DECISION -->|No| ERROR[❌ Return Error]
-
-    DECISION -->|Yes| DV[🗄️ Dataverse]
-
-    DV --> TICKET[Create IT Ticket]
-
-    TICKET --> NUMBER[Generate Ticket Number]
-
-    NUMBER --> RESPONSE[Return Response]
-
-    RESPONSE --> AGENT
-
-    AGENT --> USER[👤 Employee]
-```
-
----
-
-# 7. Dataverse Wiring Diagram
-
-```mermaid
-erDiagram
-
-    EMPLOYEE ||--o{ IT_REQUEST : creates
-
-    EMPLOYEE {
-        string EmployeeID
-        string Name
-        string Email
-        string Department
-    }
-
-    IT_REQUEST {
-        string RequestID
-        string RequestType
-        string Description
-        string Priority
-        string Status
-        date RequiredDate
-    }
-
-    IT_REQUEST }o--|| IT_CATEGORY : belongs_to
-
-    IT_CATEGORY {
-        string CategoryID
-        string CategoryName
-        string SLA
-    }
-
-    IT_REQUEST }o--o| APPROVAL : requires
-
-    APPROVAL {
-        string ApprovalID
-        string Approver
-        string Status
-        date ApprovalDate
-    }
-```
-
----
-
-# 8. Environment & ALM Wiring Diagram
-
-```mermaid
-flowchart LR
-
-    DEV[🛠️ Development Environment]
-
-    DEV --> SOL[📦 Managed Solution Structure]
-
-    SOL --> TEST[🧪 Test / UAT Environment]
-
-    TEST --> APPROVE{Business Approval}
-
-    APPROVE -->|Approved| PROD[🚀 Production Environment]
-
-    APPROVE -->|Rejected| DEV
-
-    PROD --> MON[📊 Monitoring & Evaluation]
-
-    DEV --> DLP1[🛡️ DLP Policy]
-    TEST --> DLP2[🛡️ DLP Policy]
-    PROD --> DLP3[🛡️ Production DLP Policy]
-
-    DEV --> ENV1[Environment Variables]
-    TEST --> ENV2[Environment Variables]
-    PROD --> ENV3[Environment Variables]
-
-    DEV --> CON1[Connection References]
-    TEST --> CON2[Connection References]
-    PROD --> CON3[Connection References]
-```
-
----
-
-# 9. Enterprise Security & Governance Wiring
-
-```mermaid
-flowchart TD
-
-    GOVERNANCE[🏢 Enterprise Governance]
-
-    GOVERNANCE --> IAM[🔐 Identity & Access]
-    GOVERNANCE --> DLP[🛡️ DLP Policies]
-    GOVERNANCE --> ENV[🌐 Environment Strategy]
-    GOVERNANCE --> ALM[📦 ALM / Solutions]
-    GOVERNANCE --> DATA[🔒 Data Governance]
-    GOVERNANCE --> MON[📊 Monitoring]
-
-    IAM --> RBAC[Role-Based Access]
-    IAM --> MFA[Identity Controls]
-
-    DLP --> BUSINESS[Business Connectors]
-    DLP --> NONBUSINESS[Non-Business Connectors]
-    DLP --> BLOCKED[Blocked Connectors]
-
-    ENV --> DEV[Development]
-    ENV --> TEST[Test / UAT]
-    ENV --> PROD[Production]
-
-    ALM --> SOLUTIONS[Solutions]
-    ALM --> CONN[Connection References]
-    ALM --> VARIABLES[Environment Variables]
-
-    DATA --> DV[Dataverse]
-    DATA --> SP[SharePoint]
-    DATA --> API[Enterprise APIs]
-
-    MON --> LOGS[Logs]
-    MON --> EVAL[Agent Evaluation]
-    MON --> ANALYTICS[Usage Analytics]
-```
-
----
-
-# 10. End-to-End Enterprise Wiring Diagram
-
-This is the **master architecture diagram** for the complete mini-project.
-
-```mermaid
-flowchart TB
-
-    USER[👤 Employee]
-
-    USER --> CHANNEL[Microsoft Teams / Web / Channel]
-
-    CHANNEL --> AGENT[🤖 Enterprise IT Support Agent]
-
-    AGENT --> ORCH[🧠 Generative Orchestration]
-
-    ORCH --> INTENT{Intent}
-
-    INTENT --> TOPIC[💬 Topics]
-    INTENT --> KNOW[📚 Knowledge]
-    INTENT --> TOOLS[⚙️ Tools]
-    INTENT --> FALLBACK[🚨 Fallback]
-
-    TOPIC --> VARIABLES[📦 Variables]
-    TOPIC --> SLOT[🎯 Slot Filling]
-    TOPIC --> FX[🧮 Power Fx]
-    TOPIC --> CONDITION[🔀 Conditions]
-    TOPIC --> CARD[🃏 Adaptive Cards]
-
-    KNOW --> SP[SharePoint]
-    KNOW --> DOCS[Policy Documents]
-    KNOW --> KB[IT Knowledge Base]
-
-    TOOLS --> PA[⚡ Power Automate]
-
-    PA --> DV[🗄️ Dataverse]
-    PA --> API[🌐 Enterprise API]
-    PA --> TICKET[🎫 IT Ticket]
-
-    TICKET --> HUMAN[👨‍💼 IT Support]
-
-    FALLBACK --> HUMAN
-
-    AGENT --> SECURITY[🔐 Security & Governance]
-
-    SECURITY --> DLP[🛡️ DLP]
-    SECURITY --> IAM[Identity / Access]
-    SECURITY --> ALM[📦 ALM]
-    SECURITY --> ENV[🌐 Environments]
-
-    ENV --> DEV[DEV]
-    ENV --> TEST[TEST]
-    ENV --> PROD[PROD]
-
-    DEV --> TEST
-    TEST --> PROD
-
-    PROD --> MONITOR[📊 Monitoring & Evaluation]
-```
-
----
-
-# 11. User Request → AI Agent → Enterprise System
-
-The complete request lifecycle can be summarized as:
-
-```text
-┌───────────────────────────────────────────────────────────────┐
-│                         USER                                  │
-│              "I need a developer laptop"                     │
-└────────────────────────────┬──────────────────────────────────┘
-                             │
-                             ▼
-┌───────────────────────────────────────────────────────────────┐
-│                    COPILOT STUDIO                             │
-│                                                               │
-│  Generative Orchestration → Intent → Topic / Tool / Knowledge│
-└────────────────────────────┬──────────────────────────────────┘
-                             │
-                             ▼
-┌───────────────────────────────────────────────────────────────┐
-│                  CONVERSATION LOGIC                           │
-│                                                               │
-│ Variables → Slot Filling → Conditions → Power Fx              │
-└────────────────────────────┬──────────────────────────────────┘
-                             │
-                             ▼
-┌───────────────────────────────────────────────────────────────┐
-│                    USER CONFIRMATION                           │
-│                     Adaptive Card                              │
-└────────────────────────────┬──────────────────────────────────┘
-                             │
-                             ▼
-┌───────────────────────────────────────────────────────────────┐
-│                     POWER AUTOMATE                             │
-└────────────────────────────┬──────────────────────────────────┘
-                             │
-                             ▼
-┌───────────────────────────────────────────────────────────────┐
-│                       DATAVERSE                                │
-│                  IT Request / Ticket                           │
-└────────────────────────────┬──────────────────────────────────┘
-                             │
-                             ▼
-┌───────────────────────────────────────────────────────────────┐
-│                    IT SUPPORT TEAM                             │
-│                       👨‍💼                                    │
-└───────────────────────────────────────────────────────────────┘
-```
-
----
-
-# 🔌 Component Wiring Summary
-
-| Source         | Component                | Destination       | Purpose                |
-| -------------- | ------------------------ | ----------------- | ---------------------- |
-| Employee       | Copilot Studio           | Agent             | User interaction       |
-| Agent          | Generative Orchestration | Topics/Tools      | Intent understanding   |
-| Agent          | Knowledge                | SharePoint/PDF    | Grounded answers       |
-| Topic          | Variables                | Conversation      | Maintain context       |
-| Topic          | Power Fx                 | Business Logic    | Calculations           |
-| Topic          | Adaptive Card            | User              | Confirmation           |
-| Agent          | Power Automate           | Dataverse         | Transaction processing |
-| Power Automate | API                      | Enterprise System | Integration            |
-| Agent          | Fallback                 | Human Support     | Escalation             |
-| Solution       | Connection Reference     | Connector         | ALM                    |
-| Environment    | DLP                      | Connectors        | Governance             |
-| DEV            | Solution                 | TEST              | Deployment             |
-| TEST           | Solution                 | PROD              | Production deployment  |
-
----
-
-# 🧪 Diagram-Based Validation
-
-Participants should be able to trace the complete flow:
-
-```text
-User
- ↓
-Channel
- ↓
-Copilot Studio
- ↓
-Generative Orchestration
- ↓
-Intent
- ↓
-Topic / Knowledge / Tool
- ↓
-Variables
- ↓
-Power Fx
- ↓
-Condition
- ↓
-Adaptive Card
- ↓
-Power Automate
- ↓
-Dataverse / API
- ↓
-IT Ticket
- ↓
-Human Support
-```
-
-The objective is not only to build the agent but also to understand **how every component is wired together in an enterprise AI solution**.
+Repository maintained by [**avyuktitech**](https://github.com/avyuktitech) for the EY Oct 2026 AB-620 cohort.
