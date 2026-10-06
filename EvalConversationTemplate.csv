@@ -1,0 +1,59 @@
+﻿# Import conversations to test your agent.,,
+#,,
+# Limitations,,
+# - 6 question-and-answer pairs max per conversation.,,
+# - 20 conversations max.,,
+"# - 1000 characters max per question, including spaces.",,
+#,,
+# Imported columns,,
+# conversationNumber - Identifies each conversation. All questions and responses with the same conversation number will run as a single test case against the agent.,,
+# question - The user prompt that the agent will respond to.,,
+# response - The reference agent reply. This field is optional. The agent response isn't compared to this reference answer.,,
+#,,
+# Test methods,,
+# - Test methods are not included in this template. You can select them after importing the test cases.,,
+"# - By default, the 'General quality' test method is added to the imported test set.",,
+#,,
+"# For more details, refer to the documentation: https://go.microsoft.com/fwlink/?linkid=2335991",,
+#,,
+conversationNumber,question,response
+1,I'm allergic to gluten. Do you have any pizza recommendations for me?,"Unfortunately, we're not currently offering any gluten-free pizzas."
+1,Which pizza would you recommend for someone who loves meat?,I recommend the Diavola for someone who loves meat.
+1,What's the most popular pizza type right now?,The most popular pizza types are Margherita and Diavola.
+1,What kind of pizzas do you recommend for vegetarians?,"For vegetarians, I recommend our vegetarian pizza options with fresh vegetables and classic toppings."
+1,Can you suggest a pizza for someone who doesn't like spicy food?,Margherita is a great choice for someone who doesn't like spicy food.
+2,What are the top attractions to see in Rome?,The Colosseum is one of the top attractions to see in Rome.
+2,What is the best area to explore for history in Rome?,The Roman Forum and Palatine Hill are great areas for history lovers.
+2,Where should I go for art in Rome?,Visit the Vatican Museums and the Sistine Chapel for world-class art.
+3,Should I book dinner in advance in Rome?,"Yes, booking in advance is recommended, especially for popular restaurants."
+3,Do I need to tip in Rome restaurants?,Service is usually included; a small tip is optional.
+3,Is tap water safe to drink in Rome?,"Yes, tap water is generally safe to drink in Rome. You can also ask for bottled water."
+3,Do restaurants charge for bread or table service?,"Some restaurants add a small service or bread charge, so it's best to check the menu."
+4,Do you offer delivery or only pickup?,"Yes, we offer both delivery and pickup."
+4,How long does delivery usually take?,"Delivery typically takes 30 to 45 minutes, depending on your location."
+4,Is there a minimum order amount for delivery?,"Yes, there is a minimum order amount for delivery."
+5,Can I customize my pizza toppings?,"Yes, you can customize your pizza toppings."
+5,Do you have any deals for large orders?,"Yes, we offer a 10% discount on orders of 3 or more pizzas."
+5,What's the price range for your pizzas?,"Our pizzas range from €8 to €16, depending on the size and toppings."
+5,Do you have gluten-free crust options?,"Unfortunately, we don't currently offer gluten-free crust options."
+6,Can I order a half-and-half pizza with two flavors?,"Yes, you can order a half-and-half pizza with two different flavors."
+6,What drinks do you have available?,We offer soft drinks.
+6,How do I get from Rome Fiumicino airport to the city center?,You can take the Leonardo Express train from Rome Fiumicino Airport to the city center.
+6,How long does the train from the airport take?,The Leonardo Express takes about 32 minutes to reach Termini Station.
+7,Is the Rome public transport system easy to use for tourists?,"Yes, Rome's public transport system is relatively easy for tourists to use."
+7,Do I need to buy separate tickets for metro and bus?,"No, you don't need separate tickets for the metro and bus when using a valid integrated ticket."
+7,What's the best time of year to visit Rome?,"Spring (April-May) and fall (September-October) are great times to visit Rome, with pleasant weather and fewer crowds."
+7,Is Rome very crowded in the summer?,"Yes, Rome can be very crowded during the summer, especially at major attractions."
+8,Should I avoid visiting in winter?,Winter is a good option if you prefer fewer crowds and cooler weather.
+8,Do I need to book Colosseum tickets in advance?,"Yes, booking Colosseum tickets in advance is recommended."
+8,Can you recommend a good area to stay in Rome?,Trastevere and the historic center near the Pantheon are popular areas to stay in Rome.
+8,Is Trastevere a safe area for tourists?,"Yes, Trastevere is generally considered a good area for tourists, while normal city safety precautions are recommended."
+9,How far is Trastevere from the Colosseum?,Trastevere is approximately a 25-30 minute walk from the Colosseum.
+9,Do you offer vegan pizza options?,"Yes, we offer vegan pizza options."
+9,What toppings are included in your vegan pizza?,Our vegan pizza includes tomato sauce.
+9,Is the vegan cheese available on any pizza?,"Yes, vegan cheese is available on selected pizzas."
+10,Do you label allergens on your menu?,"Yes, allergens are labeled on our menu."
+10,What's the dress code for visiting the Vatican Museums?,Shoulders and knees should be covered. Sleeveless tops and short shorts should be avoided.
+10,How much time should I plan for the Vatican Museums?,Plan for at least 3 hours to see the main highlights of the Vatican Museums.
+10,Are the Vatican Museums open on Sundays?,The Vatican Museums are open on the last Sunday of the month for free entry; they are otherwise closed on Sundays.
+10,Can I buy skip-the-line tickets online?,"Yes, you can buy skip-the-line tickets online."
