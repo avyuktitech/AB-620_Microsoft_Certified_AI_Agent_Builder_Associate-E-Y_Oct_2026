@@ -7,7 +7,7 @@ Designing and Building Integrated AI Agent Solutions in Microsoft Copilot Studio
 |---|---|
 | **Exam** | AB-620 · Level: Associate (Developer) · Duration: 120 min · Passing score: 700/1000 |
 | **Domains** | Plan & configure (30–35%) · Integrate & extend (40–45%) · Test & manage (20–25%) |
-| **Format** | 5 Days · 40 total hours · 30% concepts / 70% hands-on labs |
+| **Format** | 5 Days · 40 total hours · 20% concepts / 80% hands-on labs |
 | **Client** | EY |
 | **Cohort** | Oct 2026 |
 
