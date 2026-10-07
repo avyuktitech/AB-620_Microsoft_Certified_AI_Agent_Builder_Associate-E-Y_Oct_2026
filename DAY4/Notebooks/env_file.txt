@@ -1,0 +1,15 @@
+FOUNDRY_PROJECT_ENDPOINT="https://ab620-foundry2.services.ai.azure.com/api/projects/ab620-proj2"
+
+MODEL_DEPLOYMENT_NAME="gpt-5"
+
+MCP_SERVER_NAME="Microsoft Learn MCP server"
+
+FOUNDRY_AGENT_ENDPOINT="https://ab620-foundry2.services.ai.azure.com/api/projects/ab620-proj2/agents/ab620-agent111/endpoint/protocols/openai/responses"
+
+FOUNDRY_API_KEY="2j4GBENKCx4pScwpvd32BFUXYQ1SvrbfB7v4Q0fKq2t290ncJPAkJQQJ99CJACfhMk5XJ3w3AAAAACOGgof4"
+
+
+AZURE_TENANT_ID=6daf15c7-3d76-4c76-8fce-199f374aa674
+
+
+
